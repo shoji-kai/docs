@@ -1,40 +1,63 @@
 # ubuntu
 
-systemctl status console-setup.service'
-
 ## インストール直後にやること
-
-sudo update-alternatives --config editor
+sudo perl -i.bak -pe "s%http://(jp.)?archive.ubuntu.com/ubuntu%http://ftp.iij.ad.jp/pub/linux/ubuntu/archive%" /etc/apt/sources.list
+sudo update-alternatives --set editor /usr/bin/vim.tiny
 sudo visudo                               // 一番最後の業に書かないと有効にならない
 sudo apt update
 sudo shutdown -r now
 
+## timezone / locale
+sudo timedatectl set-timezone Asia/Tokyo
+sudo apt install -y language-pack-ja
+sudo update-locale LANG=ja_JP.UTF-8
+
 ## 最初にインストールするパッケージ
 
-vim
-build-essentials
-software-properties-common
+sudo apt install -y \
+  zsh \
+  vim \
+  build-essential \
+  software-properties-common \
+  curl \
+  postfix
 
-## PPA(Personal Package Archives)とは
+### デフォルトシェルの変更
+chsh -s /usr/bin/zsh
 
-Ubuntuの公式レポジトリからインストールできないソフトウェアや最新のバージョンを試したいときに使う
+## 初期設定
 
 ### 最新のgitを手に入れる
 
 sudo add-apt-repository ppa:git-core/ppa
 sudo apt update
-sudo apt install git
+sudo apt install -y git
+
+### GitHub
+git config --global user.name "Shoji Kai"
+git config --global user.email "sho2kai+hyakusho@gmail.com"
+mkdir ~/GitHub
+cd ~/GitHub
+git clone https://github.com/hyakusho/dotfiles
+dotfiles/deploy.sh
+
+#### vim/dein
+#mkdir ~/.cache/dein
+#curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
+#sh ./installer.sh ~/.cache/dein
+#rm installer.sh
 
 ### 最新のtmuxを手に入れる
 
 sudo apt update
-sudo apt install -y git
-sudo apt install -y automake
-sudo apt install -y build-essential
-sudo apt install -y pkg-config
-sudo apt install -y libevent-dev
-sudo apt install -y libncurses5-dev
-sudo apt install -y xsel
+sudo apt install -y \
+  git \
+  automake \
+  build-essential \
+  pkg-config \
+  libevent-dev \
+  libncurses5-dev \
+  xsel
 rm -fr /tmp/tmux
 git clone https://github.com/tmux/tmux.git /tmp/tmux
 cd /tmp/tmux
@@ -50,3 +73,28 @@ rm -fr /tmp/tmux
 git clone https://github.com/imomaliev/tmux-bash-completion /tmp/tmux-bash-completion
 sudo cp /tmp/tmux-bash-completion/completions/tmux /etc/bash_completion.d/
 rm -fr /tmp/tmux-bash-completion
+
+### ntpd
+```
+% sudo apt install -y ntp
+% sudo vim /etc/ntp.conf
+:
+# 18行目：コメント化
+# pool 0.ubuntu.pool.ntp.org iburst
+# pool 1.ubuntu.pool.ntp.org iburst
+# pool 2.ubuntu.pool.ntp.org iburst
+# pool 3.ubuntu.pool.ntp.org iburst
+# pool ntp.ubuntu.com
+
+# 同期をとるサーバーを指定
+server ntp1.jst.mfeed.ad.jp iburst
+server ntp2.jst.mfeed.ad.jp iburst
+server ntp3.jst.mfeed.ad.jp iburst 
+% sudo systemctl restart ntp
+% ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
++ntp1.jst.mfeed. 133.243.236.17   2 u    2   64    1    7.940    2.860   1.247
++ntp2.jst.mfeed. 133.243.236.17   2 u    1   64    1    8.050    2.505   1.393
+*ntp3.jst.mfeed. 133.243.236.17   2 u    1   64    1    9.595   -0.149   1.420
+```
