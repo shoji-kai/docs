@@ -45,6 +45,10 @@ tmux list-commands                // コマンドの一覧表示
 tmux list-keys                    // ショートカットの一覧表示
 tmux source-file ~/.tmux.conf     // 設定ファイルの読み込み
 tmux kill-server                  // tmuxサーバのプロセス停止
+tmux show -g                      // セッションオプションのグローバル値(デフォルト値)の一覧
+tmux show -g prefix               // セッションオプションのグローバル値(デフォルト値)を個別に取得
+tmux show                         // 現在のセッションに設定しているセッションオプションを取得
+tmux show prefix                  // 
 
 ### プレフィックスの変更 (e.g. プレフィックスをCtrl-bからCtrl-aに変更する場合)
 
@@ -77,3 +81,47 @@ bind R source-file ~/.tmux.conf \; display-message 'Reloaded config!'
 3. #{pane_index}    #P    ペインの番号
 4. #{session_name}  #S    セッションの名前
 5. #{host}          #H    ホスト名
+
+### 各オプションの指定方法
+
+set-option -s           // サーバオプションを設定
+set-option              // セッションオプションを設定
+set-option -g           // グローバルセッションオプションを設定
+set-option -w           // ウィンドウオプションを設定
+set-window-option       // 同上
+set-option -wg          // グローバルウィンドウオプションを設定
+set-window-option -g    // 同上
+
+### プラグイン
+
+1. tpmをclone
+
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+2. .tmux.confの最下行に設定を追加する
+
+# plugin
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+run ~/.tmux/plugins/tpm/tpm
+
+3. プラグインをインストールする (.tmux.confにプラグインを追加するごとにインストールが必要)
+
+^C-t I  # インストール
+^C-t U  # アップデート
+
+### byobu
+
+sudo add-apt-repository ppa:byobu/ppa
+sudo apt update
+sudo apt install byobu
+
+byobu-enable                        # ログインした時に自動的にbyobuを立ち上げる
+bobyu-disable                       # byobu-enableの解除
+touch ~/.byobu/disable-autolaunch   # 一時的にbyoubu-enableを解除
+
+byobu-ctrl-a            # エスケープシーケンスをF12に戻す
+
+byobu-select-backend    # バックエンドの切り替え
+byobu-tmux              # バックエンドをtmuxにする
+byobu-screen            # バックエンドをscreenにする

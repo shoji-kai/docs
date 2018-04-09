@@ -1,0 +1,32 @@
+# vim
+
+## neovim
+sudo add-apt-repository ppa:neovim-ppa/unstable
+sudo apt update
+sudo apt install neovim
+
+## dein
+mkdir -p ~/.cache/dein
+curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
+sh ./installer.sh ~/.cache/dein
+
+## ウィンドウ
+<C-w>s    // 水平分割
+<C-w>v    // 垂直分割
+<C-w>h    // 左に移動
+<C-w>j    // 下に移動
+<C-w>k    // 上に移動
+<C-w>l    // 右に移動
+<C-w>w    // 次に移動
+<C-w>H    // ウィンドウを左に移動
+<C-w>J    // ウィンドウを下に移動
+<C-w>K    // ウィンドウを上に移動
+<C-w>L    // ウィンドウを右に移動
+<C-w>r    // ウィンドウを回転
+<C-w>_    // 縦に最大化
+<C-w>|    // 横に最大化
+<C-w>=    // 大きさを揃える
+<C-w>>    // 幅を増やす
+<C-w><    // 幅を減らす
+<C-w>+    // 高さを増やす
+<C-w>-    // 高さを減らす

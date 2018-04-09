@@ -98,3 +98,60 @@ server ntp3.jst.mfeed.ad.jp iburst
 +ntp2.jst.mfeed. 133.243.236.17   2 u    1   64    1    8.050    2.505   1.393
 *ntp3.jst.mfeed. 133.243.236.17   2 u    1   64    1    9.595   -0.149   1.420
 ```
+
+### デスクトップ
+
+1. デスクトップおよび日本語関連のパッケージをインストール
+
+apt-get install -y ubuntu-desktop
+systemctl set-default graphical.target
+wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | sudo apt-key add -
+wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | sudo apt-key add -
+wget https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list
+apt-get update
+apt-get install -y language-pack-ja-base language-pack-ja ibus-mozc
+
+2. デスクトップ上での操作
+
+* System Settings > Language Support 
+* Text
+
+### MacでUbuntu boot usbを作成する
+
+diskutil list
+diskutil unMountDisk /dev/disk2
+diskutil eraseDisk FAT32 UBUNTU_BOOT GPT /dev/disk2
+hdiutil convert -format UDRW -o ubuntu-16.04.4-desktop-amd64.img ubuntu-16.04.4-desktop-amd64.iso
+mv ubuntu-16.04.4-desktop-amd64.img.dmg ubuntu-16.04.4-desktop-amd64.img
+diskutil list
+diskutil unMountDisk /dev/disk2
+sudo dd if=ubuntu-16.04.4-desktop-amd64.img of=/dev/rdisk2 bs=1m
+
+### デュアルブート (Windows10)
+
+### Thinkpad X1 Carbon 5th (2017)対応
+
+1. 最新のISOイメージを使う (古いとWifi, Ethernetドライバを認識しない)
+
+2. トラックポイント
+
+2-1. 一時的に変更
+
+sudo modprobe -r psmouse
+sudo modprobe psmouse proto=imps
+
+2-2. 恒久的に変更
+
+sudo vim /etc/default/grub
+:
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash psmouse.proto=imps"
+sudo update-grub2
+sudo reboot
+
+3. CapslockをCtrlに切り替える
+
+sudo apt install gnome-tweak-install
+
+4. 日本語
+
+sudo apt install ibus-mozc

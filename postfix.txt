@@ -1,0 +1,154 @@
+# postfix
+
+## Install
+
+sudo apt install postfix mailutils
+
+## Settings
+
+--- main.cf.proto       2017-12-29 16:37:58.717227725 +0900
++++ main.cf     2017-12-29 17:18:08.168975218 +0900
+@@ -75,7 +75,7 @@
+ # particular, don't specify nobody or daemon. PLEASE USE A DEDICATED
+ # USER.
+ #
+-#mail_owner = postfix
++mail_owner = postfix
+
+ # The default_privs parameter specifies the default rights used by
+ # the local delivery agent for delivery to external file or command.
+@@ -91,7 +91,7 @@
+ # from gethostname(). $myhostname is used as a default value for many
+ # other configuration parameters.
+ #
+-#myhostname = host.domain.tld
++myhostname = mail.shojikai.com
+ #myhostname = virtual.domain.tld
+
+ # The mydomain parameter specifies the local internet domain name.
+@@ -99,7 +99,7 @@
+ # $mydomain is used as a default value for many other configuration
+ # parameters.
+ #
+-#mydomain = domain.tld
++mydomain = shojikai.com
+
+ # SENDING MAIL
+ #
+@@ -120,7 +120,7 @@
+ #
+ #myorigin = /etc/mailname
+ #myorigin = $myhostname
+-#myorigin = $mydomain
++myorigin = $mydomain
+
+ # RECEIVING MAIL
+
+@@ -134,7 +134,7 @@
+ #
+ # Note: you need to stop/start Postfix when this parameter changes.
+ #
+-#inet_interfaces = all
++inet_interfaces = all
+ #inet_interfaces = $myhostname
+ #inet_interfaces = $myhostname, localhost
+
+@@ -182,7 +182,7 @@
+ # See also below, section "REJECTING MAIL FOR UNKNOWN LOCAL USERS".
+ #
+ #mydestination = $myhostname, localhost.$mydomain, localhost
+-#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
++mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+ #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
+ #      mail.$mydomain, www.$mydomain, ftp.$mydomain
+
+@@ -404,7 +404,7 @@
+ # "postfix reload" to eliminate the delay.
+ #
+ #alias_maps = dbm:/etc/aliases
+-#alias_maps = hash:/etc/aliases
++alias_maps = hash:/etc/aliases
+ #alias_maps = hash:/etc/aliases, nis:mail.aliases
+ #alias_maps = netinfo:/aliases
+
+@@ -415,7 +415,7 @@
+ #
+ #alias_database = dbm:/etc/aliases
+ #alias_database = dbm:/etc/mail/aliases
+-#alias_database = hash:/etc/aliases
++alias_database = hash:/etc/aliases
+ #alias_database = hash:/etc/aliases, hash:/opt/majordomo/aliases
+
+ # ADDRESS EXTENSIONS (e.g., user+foo)
+@@ -437,7 +437,7 @@
+ # "Maildir/" for qmail-style delivery (the / is required).
+ #
+ #home_mailbox = Mailbox
+-#home_mailbox = Maildir/
++home_mailbox = Maildir/
+
+ # The mail_spool_directory parameter specifies the directory where
+ # UNIX-style mailboxes are kept. The default setting depends on the
+@@ -573,7 +573,8 @@
+ #
+ #smtpd_banner = $myhostname ESMTP $mail_name
+ #smtpd_banner = $myhostname ESMTP $mail_name ($mail_version)
+-smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
++#smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
++smtpd_banner = $myhostname ESMTP
+
+
+ # PARALLEL DELIVERY TO THE SAME DESTINATION
+@@ -647,38 +648,44 @@
+ # sendmail_path: The full pathname of the Postfix sendmail command.
+ # This is the Sendmail-compatible mail posting interface.
+ #
+-sendmail_path =
++sendmail_path = /usr/sbin/postfix
+
+ # newaliases_path: The full pathname of the Postfix newaliases command.
+ # This is the Sendmail-compatible command to build alias databases.
+ #
+-newaliases_path =
++newaliases_path = /usr/bin/newaliases
+
+ # mailq_path: The full pathname of the Postfix mailq command.  This
+ # is the Sendmail-compatible mail queue listing command.
+ #
+-mailq_path =
++mailq_path = /usr/bin/mailq
+
+ # setgid_group: The group for mail submission and queue management
+ # commands.  This must be a group name with a numerical group ID that
+ # is not shared with other accounts, not even with the Postfix account.
+ #
+-setgid_group =
++setgid_group = postdrop
+
+ # html_directory: The location of the Postfix HTML documentation.
+ #
+-html_directory =
++#html_directory =
+
+ # manpage_directory: The location of the Postfix on-line manual pages.
+ #
+-manpage_directory =
++#manpage_directory =
+
+ # sample_directory: The location of the Postfix sample configuration files.
+ # This parameter is obsolete as of Postfix 2.1.
+ #
+-sample_directory =
++#sample_directory =
+
+ # readme_directory: The location of the Postfix README files.
+ #
+-readme_directory =
++#readme_directory =
+ inet_protocols = ipv4
++
++# 送受信メールサイズを10Mに制限
++message_size_limit = 10485760
++
++# メールボックスサイズを1Gに制限
++mailbox_size_limit = 1073741824

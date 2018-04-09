@@ -1,0 +1,14 @@
+# mysql
+
+## my.cnf
+
+[mysqld]
+character-set-server=utf8mb4
+
+[client]
+default-character-set=utf8mb4
+
+##
+
+create database wordpress;
+show variables like 'char%'

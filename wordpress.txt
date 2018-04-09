@@ -1,0 +1,177 @@
+# wordpress
+
+## セキュリティ
+
+1. 必要ないファイルへのアクセスを禁止する (wp-includes/*.phpなど)
+2. 
+
+##
+
+index.php
+  wp-blog-header.php
+    wp-load.php
+      wp-config.php
+        wp-settings.php
+          wp-includes/load.php
+          wp-includes/default-constants.php
+          wp-includes/plugin.php
+            wp-includes/class-wp-hook.php
+          wp-includes/version.php
+
+
+## global
+
+$wp_version
+$wp_db_version
+$tinymce_version
+$required_php_version
+$required_mysql_version
+$wp_local_package
+$blog_id
+
+
+
+
+
+
+## install
+
+sudo apt install -y \
+  mysql-server \
+  php \
+  php-mysql \
+  php-mbstring \
+  php-gd \
+  nginx \
+  vsftpd
+
+## サーバ証明書の取得 (Let's Encrypt)
+
+1. Certbotクライアントのインストール
+
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install python-certbot-nginx
+
+2. 
+
+## テーマ一覧
+
+### スタイルシート
+
+style.css           // 前ページに適用するスタイルシート
+editor-style.css    // 記事の編集画面に適用するスタイルシート
+
+### 関数ファイル
+
+functions.php       // サイトに関する設定などを記述
+
+### テンプレート
+
+index.php           // すべてのページを生成
+home.php            // トップページを生成
+category.php        // カテゴリーページを生成
+tag.php             // 投稿タグのページを生成
+date.php            // 月別ページ、年別ページを生成
+page.php            // 個別ページを生成
+single.php          // 記事の個別ページを生成
+image.php           // 画像の個別ページを生成
+search.php          // 検索結果ページを生成
+404.php             // 404ページを生成
+single-<post_type>.php     // カスタム投稿タイプの個別ページを生成
+archive-<post_type>.php    // カスタム投稿タイプのインデックスページを生成
+
+### パーツテンプレート
+
+header.php          // ヘッダーのソースを記述
+sidebar.php         // サイドバーのソースを記述
+footer.php          // フッターのソースを記述
+comments.php        // コメント
+searchform.php      // 検索フォーム
+
+## 関数
+
+get_header()
+get_footer()
+get_sidebar()
+get_template_part('content')                // カスタムテンプレートを読み込む e.g. content.phpを読み込むなど
+get_the_date([書式])                        // 記事の投稿年月日を返す e.g. <?php echo get_the_date('Y年n月') ?>
+get_post_meta($post->ID, '天気', true)      // カスタムフィールド
+get_children()
+get_the_category()
+get_category_link($catid)                   // カテゴリーURLを返す
+get_year_link(get_the_date('Y'))            // 年別ページのURLを返す
+get_cat_name($catid);                       // カテゴリー名を返す
+get_post_type_archive_link($post_type)      // 投稿タイプのインデックスページのURL
+get_post_type_object($post_type)            // 投稿タイプのオブジェクトを返す
+get_the_term_list($post->ID, '<category>', '', '')
+get_term_link(<スラッグ>, <タクソノミーのスラッグ>)
+get_search_form()                                         // 検索フォームを返す
+
+the_post()
+the_permalink()
+the_title()
+the_meta()
+the_excerpt()
+the_post_thumbnail('thumbnail')
+the_search_query()                    // 検索文字列
+
+wp_title()
+wp_nav_menu($args)
+wp_header()
+wp_footer()
+wp_link_pages()                                           // 分割したページへのリンクを表示する
+wp_get_attachment_image($post->ID, 'full')                // 画像を表示する
+
+bloginfo(<parts>)     // charset, name, stylesheet_url, description, rss2_url, template_url, 
+home_url()                                                // トップページのURLを返す e.g. echo home_url()
+register_nav_menus($locations)
+add_custom_image_header($header_callback, $admin_header_callback)
+have_posts()
+next_posts_link()
+previous_posts_link()
+register_sidebar()
+dynamic_sidebar()
+single_cat_title()                                        // 表示中のページのカテゴリーを返す
+single_month_title()
+next_post_link()
+previous_post_link()
+body_class()                                              // ページの種類をを識別する
+add_filter()
+add_theme_support('post-thumbnails')                      // アイキャッチ画像の機能を有効にする (functions.php)
+set_post_thumbnail_size(<width>, <height>, <boolean>)     // アイキャッチ画像のサイズを指定。最後の引数はアップロード画像サイズを自動調整するか否か
+is_single()
+is_home()
+is_month()                                                // 月別ページか?
+is_year()                                                 // 年別ページか?
+query_posts()
+has_post_format()
+
+## グローバル変数
+
+$wp_query
+$cat          // カテゴリID
+$paged        // 表示中のページ番号 (1ページ目は0だが、2ページ目は2になる)
+$post_type    // 投稿タイプ (post:投稿, page:固定ページ, revision:リビジョン, attachment:メディア, any:全て etc)
+$post         // 投稿のオブジェクト
+
+## プラグイン
+
+Power Code Editor
+Photo Dropper
+Custom Field Template
+Yet Another Related Posts Plugin
+Regenerate Thumbnails
+PHP Code Widget
+Wordpress Poplular Posts
+Breadcrumb NavXT
+Contact Form 7
+
+## トラブルシュート
+
+### 413 Request Entity Too Large
+
+1. php.iniのpost_max_size, upload_max_filesizeを編集する
+2. nginx.confのclient_max_body_sizeを編集する (デフォルトは1MB)

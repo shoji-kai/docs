@@ -1,0 +1,9 @@
+# nginx
+
+## コンテキストの階層
+
+main
+  events
+  http
+    server
+      location

@@ -1,0 +1,6 @@
+# drone
+
+## 環境構築
+
+sudo apt install mesa-utils
+sudo apt install ubuntu-desktop

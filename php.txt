@@ -1,0 +1,7 @@
+# php
+
+## インストールするモジュール
+
+php-mysql
+php-mbstring
+php-gd

@@ -1,0 +1,12 @@
+# Vagrant
+
+## Getting Started
+
+mkdir vagrant_getting_started
+cd vagrant_getting_started
+vagrant init
+vagrant box add hashicorp/precise64
+
+## ubuntu/xenial64のubuntuユーザのパスワード
+
+cat ~/.vagrant.d/boxes/ubuntu-VAGRANTSLASH-xenial64/20171221.0.0/virtualbox/Vagrantfile
