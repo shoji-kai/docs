@@ -129,29 +129,40 @@ sudo dd if=ubuntu-16.04.4-desktop-amd64.img of=/dev/rdisk2 bs=1m
 
 ### デュアルブート (Windows10)
 
+1. ディスク容量を削減する
+
+
+
 ### Thinkpad X1 Carbon 5th (2017)対応
 
 1. 最新のISOイメージを使う (古いとWifi, Ethernetドライバを認識しない)
 
 2. トラックポイント
 
-2-1. 一時的に変更
-
 sudo modprobe -r psmouse
 sudo modprobe psmouse proto=imps
-
-2-2. 恒久的に変更
-
 sudo vim /etc/default/grub
 :
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash psmouse.proto=imps"
 sudo update-grub2
 sudo reboot
 
-3. CapslockをCtrlに切り替える
+3. 中スクロール
+
+Section "InputClass"
+    Identifier "Wheel Emulation"
+    MatchProduct "PS/2 Synaptics TouchPad"
+    Option "EmulateWheel" "on"
+    Option "EmulateWheelButton" "2"
+    Option "XAxisMapping" "6 7"
+    Option "YAxisMapping" "4 5"
+EndSection
+
+4. CapslockをCtrlに切り替える
 
 sudo apt install gnome-tweak-install
 
-4. 日本語
+5. 日本語
 
 sudo apt install ibus-mozc
+LANG=C xdg-user-dirs-gtk-update
