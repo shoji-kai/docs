@@ -21,6 +21,7 @@ sudo apt install -y \
   software-properties-common \
   curl \
   zlib1g-dev \
+  libffi-dev \
   postfix
 
 ### デフォルトシェルの変更
