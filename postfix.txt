@@ -152,3 +152,21 @@ sudo apt install postfix mailutils
 +
 +# メールボックスサイズを1Gに制限
 +mailbox_size_limit = 1073741824
+
+## Gmail
+
+% sudo apt install libsasl2-modules -y
+% sudo vim /etc/postfix/sasl_passwd
+[smtp.gmail.com]:587 <username>@gmail.com:<password>
+% sudo chmod 600 /etc/postfix/sasl_passwd
+% sudo postmap /etc/postfix/sasl_passwd
+% sudo vim /etc/postfix/main.cf
+:
+relayhost = [smtp.gmail.com]:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+smtp_sasl_tls_security_options = noanonymous
+smtp_sasl_mechanism_filter = plain
+smtp_use_tls = yes
+% sudo systemctl restart postfix
