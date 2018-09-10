@@ -3,7 +3,7 @@
 ## インストール直後にやること
 sudo perl -i.bak -pe "s%http://(jp.)?archive.ubuntu.com/ubuntu%http://ftp.iij.ad.jp/pub/linux/ubuntu/archive%" /etc/apt/sources.list
 sudo update-alternatives --set editor /usr/bin/vim.tiny
-sudo visudo                               // 一番最後の業に書かないと有効にならない
+sudo visudo                               // <user> ALL=(ALL) NOPASSWD:ALL
 sudo apt update
 sudo shutdown -r now
 
